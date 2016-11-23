@@ -1,8 +1,10 @@
-//create a synth and connect it to the master output (your speakers)
 var synth = new Tone.Synth().toMaster();
 
-
 $('#play').on('click', function () {
-    //play a middle 'C' for the duration of an 8th note
-    synth.triggerAttackRelease("C4", "8n");
+    $.getJSON(
+        "http://api.openweathermap.org/data/2.5/forecast/daily?q=Sydney&mode=json&units=metric&cnt=1&appid=c989bce9f69b008a0b1e46d4c0acaa80",
+        function (result) {
+            $('#board').append(result.list[0].humidity);
+            synth.triggerAttackRelease((result.list[0].weather[0].main === "Rain" ? "C4" : "C3"), "1n");
+        });
 });
